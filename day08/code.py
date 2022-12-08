@@ -33,12 +33,8 @@ def scenic_score(g, x, y):
     scores = []
     max_height = g.get(x, y)
     for line in treelines(g, x, y):
-        n = 0
-        for i, j in line:
-            n += 1
-            if g.get(i, j) >= max_height:
-                break
-        scores.append(n)
+        visible = first(split_after(line, lambda p: g.get(*p) >= max_height), [])
+        scores.append(len(visible))
     return prod(scores)
 
 

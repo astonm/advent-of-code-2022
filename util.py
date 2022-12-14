@@ -314,6 +314,12 @@ def prod(l):
     return reduce(lambda x, y: x * y, l)
 
 
+def sign(n):
+    if not n:
+        return 0
+    return -1 if n < 0 else 1
+
+
 def running_sum(l):
     if not l:
         return l

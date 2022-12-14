@@ -235,6 +235,8 @@ class GridN:
         putc = lambda c: print(c, end="", sep="")
         if axis_order is None:
             axis_order = list(range(self.dim))
+            if len(axis_order) == 2:
+                axis_order.reverse()  # typical for 2d grids
 
         bounds_size = [len(b) for b in self.bounds()]
         ordered_bounds_size = [bounds_size[i] for i in reversed(axis_order)]

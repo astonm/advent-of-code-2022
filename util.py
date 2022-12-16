@@ -14,7 +14,7 @@ from copy import *
 from math import *
 from random import *
 from pprint import pprint, pformat
-from sys import exit
+from sys import exit, maxsize as maxint
 import re
 from queue import *
 import json

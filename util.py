@@ -231,8 +231,9 @@ class GridN:
             p = tuple(p[i] for i in axis_inverse_order)
             yield p, self.get(p)
 
-    def print(self, sep="", vsep="\n", axis_order=None):
-        putc = lambda c: print(c, end="", sep="")
+    def print(self, sep="", vsep="\n", axis_order=None, putc=None):
+        if putc is None:
+            putc = lambda c: print(c, end="", sep="")
         if axis_order is None:
             axis_order = list(range(self.dim))
             if len(axis_order) == 2:
@@ -243,7 +244,6 @@ class GridN:
         dim_prods = [prod(ordered_bounds_size[:i]) for i in range(1, len(bounds_size))]
 
         for i, (p, v) in enumerate(self.walk_all(axis_order=axis_order)):
-            # print(i, p)
             putc(v)
             for dp in dim_prods:
                 if (i + 1) % dp == 0:

@@ -107,21 +107,27 @@ def run_tetris(dir_spec, pieces):
 @click.argument("input", type=click.File())
 def part2(input):
     data = read_file(input)[0]
+    target = 1000000000000
 
-    if "ex" in input.name:
-        print("didn't solve the example this way")
-    else:
-        # observation: running the simulation on my input gives a "tetris" full row after placing the 1st piece
-        # and that happens starting after piece 1361 and then again every 1715 drops
-        # the height of the "tetris" floor increases by 2574 every 1715 drops
-        target = 1000000000000
-        assert target >= 1361  # below 1361, pattern doesn't hold
-        repeats, remainder = divmod(target - 1361, 1715)
+    sample_size = 10_000
+    res = run_tetris(data, pieces)
+    take(sample_size, res)  # shake off early chaos
 
-        pattern_repeated_floor = repeats * 2574
-        addon = last(take(remainder + 1361, run_tetris(data, pieces)), 0)
+    floors = list(take(sample_size, res))
+    floor_deltas = deltas(floors)
 
-        print(pattern_repeated_floor + addon)
+    cycle_len = None
+    cycle_delta = None
+    for cycle_guess in range(1, len(floor_deltas)):
+        if floor_deltas[:cycle_guess] == floor_deltas[cycle_guess : cycle_guess * 2]:
+            cycle_len = cycle_guess
+            cycle_delta = floors[cycle_len] - floors[0]
+            break
+
+    multiple = (target - sample_size) // cycle_len
+    similar_but_smaller = target - multiple * cycle_len
+    base_floor = last(take(similar_but_smaller, run_tetris(data, pieces)))
+    print(base_floor + multiple * cycle_delta)
 
 
 if __name__ == "__main__":

@@ -19,6 +19,9 @@ import re
 from queue import *
 import json
 from tqdm import tqdm
+from enum import Enum, IntEnum
+
+raw_input = __builtins__["input"]
 
 
 def p(*a, **k):
@@ -161,6 +164,12 @@ class Grid:
 
     def __eq__(self, other):
         return self.lines == other.lines
+
+    @staticmethod
+    def from_string(s):
+        lines = s.rstrip().splitlines()
+        width = max(len(l) for l in lines)
+        return Grid([list(l.ljust(width)) for l in lines])
 
 
 class GridN:

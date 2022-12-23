@@ -21,7 +21,10 @@ import json
 from tqdm import tqdm
 from enum import Enum, IntEnum
 
-raw_input = __builtins__["input"]
+try:
+    raw_input = __builtins__["input"]
+except:
+    raw_input = getattr(__builtins__, "input")
 
 
 def p(*a, **k):
@@ -206,6 +209,9 @@ class GridN:
 
     def set(self, p, val):
         self.g[p] = val
+
+    def unset(self, p):
+        del self.g[p]
 
     def neighbors(self, p, diags=False):
         pxs = []
